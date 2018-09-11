@@ -1,11 +1,16 @@
 package com.capgemini.mockito;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 public class BookDAOTest {
 
@@ -13,7 +18,10 @@ public class BookDAOTest {
 	private static Book book1;
 	private static Book book2;
 
+	@Before
 	public void setUp() {
+        mockedBookDAO = mock(BookDAO.class);
+
 		book1 = new Book("8131721019", "Compilers Principles", Arrays.asList(
 				"D. Jeffrey Ulman", "Ravi Sethi", "Alfred V. Aho",
 				"Monica S. Lam"), "Pearson Education Singapore Pte Ltd", 2008,
@@ -23,6 +31,10 @@ public class BookDAOTest {
 				Arrays.asList("Yashavant Kanetkar"), "BPB PUBLICATIONS", 2012,
 				675, "BOOK_IMAGE");
 
+        when(mockedBookDAO.getAllBooks()).thenReturn(Arrays.asList(book1, book2));
+		when(mockedBookDAO.addBook(book1)).thenReturn(book1.getIsbn());
+        when(mockedBookDAO.updateBook(book1)).thenReturn(book1.getIsbn());
+        when(mockedBookDAO.getBook("8131721019")).thenReturn(book1);
 	}
 
 	@Test
